@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D перегляд</title>
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  model-viewer {
+    width: 100%;
+    height: 100%;
+    --poster-color: transparent;
+    background-color: transparent;
+  }
+  #error {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #8a8a8a;
+    font-size: 13px;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+</style>
+</head>
+<body>
+  <model-viewer id="mv"
+    camera-controls
+    touch-action="pan-y"
+    auto-rotate
+    auto-rotate-delay="0"
+    rotation-per-second="18deg"
+    shadow-intensity="0.9"
+    exposure="1.05"
+    camera-orbit="35deg 70deg auto"
+    field-of-view="30deg"
+    interaction-prompt="none"
+    loading="eager">
+  </model-viewer>
+  <div id="error">Не вказано модель. Додайте до посилання ?model=назва_файлу.glb</div>
+
+<script>
+  // Назва вашого репозиторію та гілки — міняти тут, якщо зміните репозиторій
+  const REPO_OWNER = "paralellworkworld-sys";
+  const REPO_NAME = "3dmod";
+  const BRANCH = "main";
+
+  const params = new URLSearchParams(window.location.search);
+  const modelFile = params.get("model");
+
+  const mv = document.getElementById("mv");
+  const errorBox = document.getElementById("error");
+
+  if (modelFile) {
+    const url = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${modelFile}`;
+    mv.setAttribute("src", url);
+  } else {
+    mv.style.display = "none";
+    errorBox.style.display = "flex";
+  }
+</script>
+</body>
+</html>
